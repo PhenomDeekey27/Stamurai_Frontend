@@ -1,0 +1,20 @@
+// lib/requests.js
+import api from "@/lib/api";
+import Cookies from "js-cookie";
+
+export async function deleteUserTodo(id) {
+  try {
+    const token = Cookies.get("token");
+
+    const deletedTodo = await api.delete(`/todo/delete-user-todo/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // ✅ Fix: no colon after Bearer
+      },
+    });
+
+    return deletedTodo;
+  } catch (error) {
+    console.error("Delete error:", error);
+    return error?.response?.data || error.message;
+  }
+}
