@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { redirect } from "next/navigation";
 
 const Login = () => {
+  const router = useRouter()
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -21,7 +22,8 @@ const Login = () => {
      const res = await api.post("/auth/login", form);
       console.log(res,"response")
       console.log(res.headers);
-      window.location.href="/"
+    
+  router.push("/dashboard")
    
     } catch (err) {
       alert(err.response?.data?.message || "Login failed");
