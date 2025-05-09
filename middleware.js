@@ -17,20 +17,14 @@ export function middleware(request) {
     return NextResponse.next();
   }
 
-  const protectedRoutes = ["/"];
   const authRoutes = ["/auth/login", "/auth/register", "/auth/signup"];
 
-  // Block access to protected pages without token
-  if (protectedRoutes.includes(normalizedPath) && !token) {
-    console.log("Redirecting to login...");
-    return NextResponse.redirect(new URL("/auth/login", request.url));
-  }
-
-  // Block access to login/register if already authenticated
+  // If authenticated and visiting login/register/signup, redirect to home
   if (authRoutes.includes(normalizedPath) && token) {
     console.log("Redirecting to home...");
     return NextResponse.redirect(new URL("/", request.url));
   }
 
+  // Don't block access to any other routes (including /)
   return NextResponse.next();
 }
