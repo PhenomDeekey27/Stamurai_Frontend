@@ -2,6 +2,7 @@
 import { useState } from "react";
 import api from "@/lib/api";
 import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -20,7 +21,8 @@ const Login = () => {
       // ✅ Expect backend to set httpOnly cookie
      const res = await api.post("/auth/login", form);
       console.log(res,"response")
-     if(res.data) router.push("/");
+      redirect("/")
+   
     } catch (err) {
       alert(err.response?.data?.message || "Login failed");
     }
