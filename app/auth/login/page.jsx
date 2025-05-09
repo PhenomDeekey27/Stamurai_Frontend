@@ -10,7 +10,6 @@ const Login = () => {
     password: "",
   });
 
-  const router = useRouter();
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -21,7 +20,7 @@ const Login = () => {
       // ✅ Expect backend to set httpOnly cookie
      const res = await api.post("/auth/login", form);
       console.log(res,"response")
-      redirect("/")
+      window.location.href="/"
    
     } catch (err) {
       alert(err.response?.data?.message || "Login failed");
