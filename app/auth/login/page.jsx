@@ -24,8 +24,9 @@ const Login = () => {
       console.log(res.headers);
 
       // Log cookies to see if the token is being set correctly
-      console.log("Cookies:", document.cookie); // This will give you all cookies (but only non-HttpOnly cookies)
-    
+      console.log("Cookies:", document.cookie); 
+      // This will give you all cookies (but only non-HttpOnly cookies)
+    router.push("/")
 
    
     } catch (err) {
