@@ -20,6 +20,7 @@ const Login = () => {
       // ✅ Expect backend to set httpOnly cookie
      const res = await api.post("/auth/login", form);
       console.log(res,"response")
+      console.log(res.headers);
       window.location.href="/"
    
     } catch (err) {
