@@ -2,7 +2,7 @@
 import { useState } from "react";
 import api from "@/lib/api";
 import { useRouter } from "next/navigation";
-import { redirect } from "next/navigation";
+
 
 const Login = () => {
   const router = useRouter()
@@ -20,10 +20,13 @@ const Login = () => {
     try {
       // ✅ Expect backend to set httpOnly cookie
      const res = await api.post("/auth/login", form);
-      console.log(res,"response")
+         console.log(res, "response");
       console.log(res.headers);
+
+      // Log cookies to see if the token is being set correctly
+      console.log("Cookies:", document.cookie); // This will give you all cookies (but only non-HttpOnly cookies)
     
-  router.push("/dashboard")
+
    
     } catch (err) {
       alert(err.response?.data?.message || "Login failed");
