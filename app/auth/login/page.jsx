@@ -18,8 +18,9 @@ const Login = () => {
     e.preventDefault();
     try {
       // ✅ Expect backend to set httpOnly cookie
-      await api.post("/auth/login", form);
-      router.push("/");
+     const res = await api.post("/auth/login", form);
+      console.log(res,"response")
+     if(res.data) router.push("/");
     } catch (err) {
       alert(err.response?.data?.message || "Login failed");
     }
