@@ -1,33 +1,34 @@
 'use client'
 
-import { useRouter } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
+
+import {useContext, useEffect, useState } from "react";
 
 import { getTodocreatedByUser } from "@/utitlity/get-Todos-created-by-user";
 import { getTodoassignedtoUser } from "@/utitlity/get-Todos-assigned-to-user";
 import { getOverdueTodos } from "@/utitlity/get-ourdue-todos";
 import { getUserTodos } from "@/utitlity/get-user-todos";
 import AllUserTodos from "@/components/AllUserTodos";
-import { Usercontext } from "@/Context/UserContext";
-import Cookies from "js-cookie";
+import { UserContext } from "@/Context/UserContext";
+
 
 export const dynamic = "force-dynamic";
 
 
 
 const Home = () => {
-  const router = useRouter();
+
+
+  const {userdetails}=useContext(UserContext)
+
+  
+ 
  
   const [todos, settodos] = useState([])
   const [assingedTodos, setassingedTodos] = useState([])
   const [overdue, setoverdue] = useState([])
   const [userTodos, setuserTodos] = useState([])
-  const {userdetails,setuserdetails} = useContext(Usercontext)
  
-
-
-
-  useEffect(() => {
+   useEffect(() => {
 
     const fetchData = async () => {
       try {
@@ -93,13 +94,15 @@ const Home = () => {
   }, []);
 
 
-  console.log("Token from Cookies:", Cookies.get("token"));
+
 
 
 
   return (
+    <div>
+   
     <div className="flex flex-col h-full px-4 py-2">
-      <h1 className="text-xl font-bold mb-4">Welcome, {userdetails?.username || "User"}!</h1>
+      <h1 className="text-xl font-bold mb-4">Welcome! {userdetails?.name}</h1>
       <section className="flex-1 overflow-y-auto">
 
         <p className="text-gray-600">Your tasks will appear here.</p>
@@ -126,6 +129,9 @@ const Home = () => {
         <AllUserTodos></AllUserTodos>
 
       </section>
+    </div>
+ 
+  
     </div>
   );
 };

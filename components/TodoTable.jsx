@@ -84,7 +84,7 @@ const handleDeleteTodo = async () => {
           <tbody>
            
             {todos.map((todo) => (
-              <tr className="bg-gray-800" key={todo.dueDate}>
+              <tr className="bg-gray-800" key={todo._id}>
                 <th scope="col" className="px-6 py-3 text-white">
                   {todo.title}
                 </th>

@@ -8,9 +8,7 @@ export async function getTodoassignedtoUser() {
             const token = Cookies.get('token')
         
         const assignedTodos = await api.get("/todo/get-assigned-todos",{
-            headers:{
-                Authorization:`Bearer ${token}`
-            }
+           
         })
 
         return assignedTodos.data

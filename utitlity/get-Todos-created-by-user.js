@@ -1,23 +1,19 @@
 import api from "@/lib/api";
-
 import Cookies from "js-cookie";
 
 export async function getTodocreatedByUser() {
+  try {
+    const token = Cookies.get('token');  // Get the token from cookies
+    const response = await api.get("/todo/get-my-todos", {
+      headers: {
+        Authorization: `Bearer ${token}`,  // Attach the token here
+      },
+    });
 
-    try {
-        const token = Cookies.get('token')
-        const todos = await api.get("/todo/get-my-todos",{
-            headers:{
-                    Authorization:`Bearer ${token}`
-            }
-        })
+    return response.data;  // Return the data from the response
 
-        return todos.data
-        
-    } catch (error) {
-        console.error(error ? error : error.message)
-        throw error
-        
-    }
-    
+  } catch (error) {
+    console.error(error ? error : error.message);
+    throw error;  // Rethrow the error to be handled by the calling function
+  }
 }

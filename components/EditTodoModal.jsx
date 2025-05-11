@@ -3,11 +3,11 @@ import React, { useContext } from "react";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import { updateUserTodos } from "@/utitlity/update-user-todo";
-import { Usercontext } from "@/Context/UserContext";
-import { useRouter } from "next/navigation";
+
 import { ToastContainer,toast } from "react-toastify";
-import { getUserTodos } from "@/utitlity/get-user-todos";
+
 import { useUserContext } from "@/Context/AllUserContext";
+import { sendNotifications } from "@/utitlity/send-user-notifications";
 
 
 
@@ -32,7 +32,20 @@ const EditTodoModal = ({editTodoModel,seteditTodoModel,singleTodoData,fetchUserT
     document.getElementById(`${key}_dropdown`)?.classList.add("hidden");
   };
 
-  const router = useRouter()
+const assignNotifications =async(user)=>{
+  handleDropdownSelect("assignedTo", user._id)
+  try {
+     const notifcations = await sendNotifications(user._id,"User notified Successfully")
+     console.log(notifcations,"notification")
+    
+  } catch (error) {
+    console.log(error ? error : error.message)
+    
+  }
+
+  
+
+}
 
 
     const handleSubmit=async(e)=>{
@@ -252,11 +265,8 @@ const EditTodoModal = ({editTodoModel,seteditTodoModel,singleTodoData,fetchUserT
                                 <button
                                   type="button"
                                   className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center"
-                                  onClick={() =>
-                                    document
-                                      .getElementById("edit_assignedTo_dropdown")
-                                      ?.classList.toggle("hidden")
-                                  }
+                                  onClick={() => document.getElementById("edit_assignedTo_dropdown")?.classList.toggle("hidden")
+}
                                 >
                                   Select Users
                                   <svg className="w-2.5 h-2.5 ml-2" viewBox="0 0 10 6">
@@ -275,7 +285,7 @@ const EditTodoModal = ({editTodoModel,seteditTodoModel,singleTodoData,fetchUserT
                                     {allUsers.map((user) => (
                                       <li
                                         key={user.name}
-                                        onClick={() => handleDropdownSelect("assignedTo", user._id)}
+                                        onClick={() =>assignNotifications(user) }
                                         className="cursor-pointer hover:bg-gray-200 p-2"
                                       >
                                         {user.name}

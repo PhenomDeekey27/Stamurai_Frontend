@@ -7,9 +7,7 @@ export async function deleteUserTodo(id) {
     const token = Cookies.get("token");
 
     const deletedTodo = await api.delete(`/todo/delete-user-todo/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`, // ✅ Fix: no colon after Bearer
-      },
+     
     });
 
     return deletedTodo;

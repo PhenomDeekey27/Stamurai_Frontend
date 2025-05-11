@@ -4,7 +4,7 @@ import api from "@/lib/api";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { toast,ToastContainer } from "react-toastify"; 
-import { useEffect } from "react";
+
 const Register = () => {
 
     const [form, setform] = useState({
@@ -32,7 +32,7 @@ const Register = () => {
       try {
         const res = await api.post('/auth/register', form);
         console.log(res.data);
-        Cookies.set('token', res.data.token);
+     
         router.push('/auth/login');
       } catch (err) {
         console.error("Registration error:", err);

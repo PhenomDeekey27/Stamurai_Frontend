@@ -1,29 +1,17 @@
 import { NextResponse } from "next/server";
 
-export function middleware(request) {
-  const token = request.cookies.get("token")?.value;
-  const { pathname } = request.nextUrl;
-  const normalizedPath = pathname.replace(/\/$/, "") || "/";
+export function middleware(req) {
+  const token = req.cookies.get("token"); // Check if token exists
 
-  // Allow static files and API routes
-  if (
-    pathname.startsWith("/_next") ||
-    pathname.startsWith("/api") ||
-    pathname.startsWith("/favicon.ico")
-  ) {
-    return NextResponse.next();
-  }
+  const { pathname } = req.nextUrl;
 
-  const authRoutes = ["/auth/login", "/auth/register", "/auth/signup"];
-
-  if (authRoutes.includes(normalizedPath) && token) {
-    return NextResponse.redirect(new URL("/", request.url));
+  if (token && (pathname === "/auth/login" || pathname === "/auth/register")) {
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
   return NextResponse.next();
 }
 
-// ✅ This tells Next.js to run middleware only on these routes
 export const config = {
-  matcher: ["/auth/:path*"], // only run on auth pages
+  matcher: ["/auth/login", "/auth/register"], // Apply middleware to these routes
 };

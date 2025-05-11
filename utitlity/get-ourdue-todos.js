@@ -5,9 +5,7 @@ export async function getOverdueTodos(){
     try {
         const token = Cookies.get('token')
          const overdueTodos = await api.get("/todo/get-overdue-todos",{
-            headers:{
-                Authorization:`Bearer : ${token}`
-            }
+           
          })
 
          return overdueTodos.data

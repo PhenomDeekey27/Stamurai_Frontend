@@ -13,17 +13,20 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="h-screen overflow-hidden">
-        <UserProvider>
-          <AllUserProvider>
-        <div className="flex h-full">
-          <Sidebar />
-          <div className="flex-1 flex flex-col overflow-y-auto">
-            <Header></Header>
-            {children}
-          </div>
-        </div>
-        </AllUserProvider>
-        </UserProvider>
+        <AllUserProvider>
+          <UserProvider>
+        
+                <div className="flex h-full">
+                  <Sidebar />
+                  <div className="flex-1 flex flex-col overflow-y-auto">
+                    <Header />
+                    {children}
+                  </div>
+                </div>
+                </UserProvider>
+                </AllUserProvider>
+                
+            
       </body>
     </html>
   );

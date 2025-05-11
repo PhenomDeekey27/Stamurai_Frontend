@@ -1,30 +1,42 @@
-"use client"
-import { useState,useEffect, createContext } from "react";
-import Cookies from "js-cookie";
-import jwt from "jsonwebtoken"
+"use client";
 
+import { useState, useEffect, createContext } from "react";
+import { useRouter } from "next/navigation";
+import { getCurrentUser } from "@/utitlity/get-current-user"; // Adjust path if needed
 
-export const Usercontext = createContext()
+export const UserContext = createContext();
 
 export function UserProvider({ children }) {
-    const [userdetails, setuserdetails] = useState(null);
-    const [loading, setLoading] = useState(true);
-  
-    useEffect(() => {
-      const token = Cookies.get("token");
-      if (token) {
-        const decoded = jwt.decode(token);
-        setuserdetails(decoded);
+  const [userdetails, setuserdetails] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const user = await getCurrentUser();
+        console.log(user,"details of user in context")
+        setuserdetails(user);
+      } catch (err) {
+        console.error("Failed to fetch current user", err);
+
+        // ✅ Redirect to login if unauthorized
+        if (err?.response?.status === 401) {
+          router.push("/auth/login");
+        }
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
-    }, []);
-  
-    if (loading) return <div>Loading context...</div>;
-  
-    return (
-      <Usercontext.Provider value={{ userdetails, setuserdetails }}>
-        {children}
-      </Usercontext.Provider>
-    );
-  }
-  
+    }
+
+    fetchUser();
+  }, [router]);
+
+  if (loading) return <div>Loading context...</div>;
+
+  return (
+    <UserContext.Provider value={{ userdetails, setuserdetails }}>
+      {children}
+    </UserContext.Provider>
+  );
+}
