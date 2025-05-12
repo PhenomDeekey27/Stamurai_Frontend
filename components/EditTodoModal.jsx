@@ -8,6 +8,7 @@ import { ToastContainer,toast } from "react-toastify";
 
 import { useUserContext } from "@/Context/AllUserContext";
 import { sendNotifications } from "@/utitlity/send-user-notifications";
+import { UserContext } from "@/Context/UserContext";
 
 
 
@@ -15,6 +16,7 @@ const EditTodoModal = ({editTodoModel,seteditTodoModel,singleTodoData,fetchUserT
 
   const [todoData, setTodoData] = useState(singleTodoData)
     const {allUsers} =useUserContext()
+    const{userdetails} = useContext(UserContext)
     
 
     
@@ -35,7 +37,9 @@ const EditTodoModal = ({editTodoModel,seteditTodoModel,singleTodoData,fetchUserT
 const assignNotifications =async(user)=>{
   handleDropdownSelect("assignedTo", user._id)
   try {
-     const notifcations = await sendNotifications(user._id,"User notified Successfully")
+     const notifcations = await sendNotifications(user._id,`
+      You have been assigned to complete a piece of work by ${userdetails?.name} .You can find more details about the work on you dashboard
+      `)
      console.log(notifcations,"notification")
     
   } catch (error) {
@@ -99,9 +103,9 @@ const assignNotifications =async(user)=>{
                 >
                   <path
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
                   />
                 </svg>
@@ -282,11 +286,11 @@ const assignNotifications =async(user)=>{
                                   className="hidden bg-white shadow-md rounded-lg mt-2 w-44"
                                 >
                                   <ul className="text-sm text-gray-700">
-                                    {allUsers.map((user) => (
+                                    {allUsers.filter((user)=>user._id !==userdetails._id).map((user) => (
                                       <li
                                         key={user.name}
                                         onClick={() =>assignNotifications(user) }
-                                        className="cursor-pointer hover:bg-gray-200 p-2"
+                                        className={`cursor-pointer hover:bg-gray-200 p-2 ${user._id===userdetails.id ? "opacity-50 pointer-events-none":""}`}
                                       >
                                         {user.name}
                                       </li>

@@ -31,33 +31,43 @@ const handleEdittodo=(todo)=>{
 const handleDeleteTodo = async () => {
   try {
     const removeTodos = await deleteUserTodo(selectedTodo);
-    console.log(removeTodos, "rt");
 
-    if (
-      removeTodos?.message &&
-      removeTodos.message.toLowerCase().includes("not authorized")
-    ) {
-      toast.error("Not authorized to remove this todo");
-      return; // Stop further execution
+    console.log(removeTodos, "Delete Response");
+
+    // If your API returns a success response with an authorization error in the message
+    if (removeTodos?.message?.toLowerCase().includes("not authorized")) {
+      toast.error("You are not authorized to delete this todo.");
+      return;
     }
 
     toast.success("Todo removed successfully");
     setdeleteModal(!deleteModal);
     await fetchUserTodos();
-   
-
   } catch (error) {
-    console.error(error?.message || error);
-    toast.error(error?.message || "An error occurred while deleting the todo");
+    console.error("Delete error:", error);
+
+    // Check if it's an Axios-style error with a response status
+    const status = error?.status;
+
+    if (status === 401 || status === 403) {
+      toast.error("You are not authorized to delete this todo.");
+    } else {
+      // Generic fallback
+      toast.error(error?.response?.data?.message || "Something went wrong while deleting the todo.");
+    }
+
+    // No re-throw to prevent Next.js error page
   }
 };
 
 
 
 
+
   return (
-    <div>
-      <div className="relative overflow-x-auto">
+    <div className="w-full overflow-x-auto">
+      <ToastContainer></ToastContainer>
+      <div className="relative overflow-x-auto" >
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -142,13 +152,13 @@ const handleDeleteTodo = async () => {
               onClick={()=>document.getElementById("delete-modal").classList.toggle("hidden")}
               >
                 <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    <path stroke="currentColor" stroke-linecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                 </svg>
                 <span className="sr-only">Close modal</span>
             </button>
-            <div className="p-4 md:p-5 text-center">
+            <div className="p-4 md:p-5 text-center flex items-center flex-col gap-4">
                 <svg className="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                 </svg>
                 <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete this product?</h3>
                 <button data-modal-hide="popup-modal" type="button" className="text-white bg-red-600 hover:bg-red-800  font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 

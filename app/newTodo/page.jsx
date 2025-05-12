@@ -1,18 +1,23 @@
 "use client";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useState } from "react";
+import { useContext, useState,useEffect } from "react";
 
 import { createTodo } from "@/utitlity/create-user-todo";
 import { toast,ToastContainer } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useUserContext } from "@/Context/AllUserContext";
+import { UserContext } from "@/Context/UserContext";
+import { sendNotifications } from "@/utitlity/send-user-notifications";
 
 
 
 const NewTodo = () => {
   const {allUsers}=useUserContext()
-  console.log(allUsers,"allU")
+
+  const {userdetails}=useContext(UserContext)
+   
+
   const [todoData, setTodoData] = useState({
     title: "",
     description: "",
@@ -21,6 +26,8 @@ const NewTodo = () => {
     dueDate: null,
     assignedTo: "",
   });
+
+  
 
 
   const handleInputChange = (e) => {
@@ -77,9 +84,28 @@ const NewTodo = () => {
 
   };
 
+const assignNotifications =async(user)=>{
+  handleDropdownSelect("assignedTo", user._id)
+  try {
+     const notifcations = await sendNotifications(user._id,`
+      You have been assigned to complete a piece of work by ${userdetails?.name} .You can find more details about the work on you dashboard
+      `)
+     console.log(notifcations,"notification")
+    
+  } catch (error) {
+    console.log(error ? error : error.message)
+    
+  }
+
+  
+
+}
 
 
   
+
+
+
 
   return (
     <div>
@@ -265,8 +291,8 @@ const NewTodo = () => {
                     {allUsers.map((user) => (
                       <li
                         key={user.name}
-                        onClick={() => handleDropdownSelect("assignedTo", user._id)}
-                        className="cursor-pointer hover:bg-gray-200 p-2"
+                        onClick={() => assignNotifications(user)}
+                        className={`cursor-pointer hover:bg-gray-200 p-2 ${user._id===userdetails._id ? "opacity-50 pointer-events-none":""}`}
                       >
                         {user.name}
                       </li>

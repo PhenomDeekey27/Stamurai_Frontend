@@ -1,12 +1,21 @@
 'use client'
 
 
-import { useState } from "react";
+import { useContext, useState,useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ToastContainer,toast } from "react-toastify";
 import api from "@/lib/api";
+import { UserContext } from "@/Context/UserContext";
+import { useUserContext } from "@/Context/AllUserContext";
+
+
 
 const Login = () => {
+  const {userdetails,setuserdetails,fetchUser}=useContext(UserContext)
+
+  const {getUsers}=useUserContext()
+  
+ 
 
    const [form, setform] = useState({
        
@@ -31,6 +40,9 @@ const Login = () => {
       try {
         const res = await api.post('/auth/login', form);
         console.log(res.data);
+        setuserdetails(res.data.data)
+        await getUsers()
+        await fetchUser()
      
         router.push('/');
       } catch (err) {

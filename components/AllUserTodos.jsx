@@ -59,7 +59,7 @@ const AllUserTodos = () => {
   return (
     <div className="mt-12">
       {/* Search bar component */}
-      <div className="flex items-center justify-around gap-4 flex-col lg:flex-row bg-slate-200 p-4">
+      <div className="flex  items-center justify-around gap-4 flex-col lg:flex-row bg-slate-200 p-4">
         {/* Search Bar */}
         <form className="max-w-md w-[90vw] md:w-md">
           <label htmlFor="default-search" className="mb-2 text-sm font-medium sr-only">
@@ -96,72 +96,73 @@ const AllUserTodos = () => {
         </form>
 
         {/* Status Dropdown */}
-        <div className="relative">
-          <button
-            id="dropdownDefaultButton"
-            data-dropdown-toggle="dropdown"
-            className="text-white bg-blue-700 hover:bg-blue-800 p-2 flex items-center rounded-md cursor-pointer"
-            type="button"
-            onClick={() =>
-              document.getElementById("status_dropdown").classList.toggle("hidden")
-            }
-          >
-            Status{" "}
-            <svg
-              className="w-2.5 h-2.5 ms-3"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 10 6"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="m1 1 4 4 4-4"
-              />
-            </svg>
-          </button>
+        {/* Status Dropdown */}
+    <div className="">
+      <button
+        id="dropdownDefaultButton"
+        data-dropdown-toggle="dropdown"
+        className="text-white bg-blue-700 hover:bg-blue-800 p-2 flex items-center rounded-md cursor-pointer"
+        type="button"
+        onClick={() =>
+          document.getElementById("status_dropdown").classList.toggle("hidden")
+        }
+      >
+        Status{" "}
+        <svg
+          className="w-2.5 h-2.5 ms-3"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 10 6"
+        >
+          <path
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="m1 1 4 4 4-4"
+          />
+        </svg>
+      </button>
 
-          <div
-            id="status_dropdown"
-            className="z-10 hidden absolute top-10 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700"
-          >
-            <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  onClick={() => setSelectedStatus("Pending")}
-                >
-                  Pending
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  onClick={() => setSelectedStatus("Completed")}
-                >
-                 Completed
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  onClick={() => setSelectedStatus("In-Progress")}
-                >
-                 In-Progress
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
+      <div
+        id="status_dropdown"
+        className="z-10 hidden absolute top-50 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700"
+      >
+        <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+          <li>
+            <a
+              href="#"
+              className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+              onClick={() => setSelectedStatus("Pending")}
+            >
+              Pending
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+              onClick={() => setSelectedStatus("Completed")}
+            >
+             Completed
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+              onClick={() => setSelectedStatus("In-Progress")}
+            >
+             In-Progress
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
 
         {/* Priority Dropdown */}
-        <div className="relative">
+        <div className="">
           <button
             id="dropdownDefaultButton"
             data-dropdown-toggle="dropdown"
@@ -191,7 +192,7 @@ const AllUserTodos = () => {
 
           <div
             id="priority_dropdown"
-            className="z-10 hidden absolute bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-32 dark:bg-gray-700"
+            className="z-10 top-50 hidden absolute bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-32 dark:bg-gray-700"
           >
             <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
               <li>
@@ -235,7 +236,11 @@ const AllUserTodos = () => {
       </div>
 
       {/* Display filtered todos */}
-      {filteredTodos.length > 0 && <TodoTable todos={filteredTodos} fetchUserTodos={fetchUserTodos}></TodoTable>}
+      <div>
+         {filteredTodos.length > 0 && <TodoTable todos={filteredTodos} fetchUserTodos={fetchUserTodos}></TodoTable>}
+
+      </div>
+     
     </div>
   );
 };

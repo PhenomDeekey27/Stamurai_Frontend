@@ -3,18 +3,23 @@ import React, { useContext, useEffect, useState } from "react";
 import { Bell } from "lucide-react";
 import { UserContext } from "@/Context/UserContext";
 import { getNofications } from "@/utitlity/get-user-notifications";
+import NotificationModal from "./NotificationModal";
 
 const Header = () => {
   const { userdetails } = useContext(UserContext);
   console.log(userdetails,"usd")
   const [notifcationsCount, setnotifcationsCount] = useState(0);
+  const [displayNotificationModal, setdisplayNotificationModal] = useState(false)
+  const [notificationsData, setnotificationsData] = useState([])
  
 
  async function getUsernotifications(userId) {
   const notifications = await getNofications(userId);
-  console.log(notifications);
+  console.log(notifications,"arrived Notifications");
   if (Array.isArray(notifications.data)) {
     setnotifcationsCount(notifications.data.length);
+    setnotificationsData(notifications.data)
+  
   } else {
     setnotifcationsCount(0);
   }
@@ -22,7 +27,11 @@ const Header = () => {
 
 
   useEffect(() => {
+    if(userdetails?._id){
     getUsernotifications(userdetails?._id);
+    }else{
+      setnotifcationsCount(0)
+    }
   }, [userdetails]);
 
   return (
@@ -36,12 +45,19 @@ const Header = () => {
 
         {/* Bell Icon (Only on md and up) */}
         <div className="relative hidden md:flex cursor-pointer">
-          <Bell className="text-green-600" size={26} />
+          <button onClick={()=>setdisplayNotificationModal(!displayNotificationModal)} className="cursor-pointer">
+              <Bell className="text-green-600" size={26}/>
+          </button>
+        
           {notifcationsCount && notifcationsCount > 0 && (
             <span className="absolute -top-1 -right-2 bg-red-600 text-white text-xs px-1.5 py-0.5 rounded-full">
               {notifcationsCount}
             </span>
           )}
+          {
+            displayNotificationModal && <NotificationModal data={notificationsData}></NotificationModal>
+          }
+
         </div>
       </div>
     </header>

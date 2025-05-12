@@ -3,7 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Menu } from "lucide-react";
 import { usePathname } from "next/navigation";
-import Cookies from "js-cookie";
+
 import { useRouter } from "next/navigation";
 import LogoutButton from "./LogoutButton";
 
@@ -12,12 +12,7 @@ const Sidebar = () => {
   const pathname = usePathname();
   const router = useRouter()
 
-  const handleLogout=()=>{
-    Cookies.remove("token")
-    router.push("/auth/login")
 
-
-  }
 
   return (
     <>

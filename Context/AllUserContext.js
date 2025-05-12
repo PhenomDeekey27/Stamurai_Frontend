@@ -7,7 +7,7 @@ export const AllUserProvider = ({ children }) => {
   const [allUsers, setAllUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const getUsers = async () => {
+ const getUsers = async () => {
     try {
       const Users = await fetchAllUsers();
       setAllUsers(Users?.data || []);

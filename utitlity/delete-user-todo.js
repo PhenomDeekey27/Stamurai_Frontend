@@ -13,6 +13,6 @@ export async function deleteUserTodo(id) {
     return deletedTodo;
   } catch (error) {
     console.error("Delete error:", error);
-    return error?.response?.data || error.message;
+    throw error?.response?.data || error.message;
   }
 }
