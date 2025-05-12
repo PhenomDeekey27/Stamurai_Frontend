@@ -38,7 +38,11 @@ const Login = () => {
   
     
       try {
-        const res = await api.post('/auth/login', form);
+        const res = await api.post('/auth/login', form,{
+          headers: {
+    "Content-Type": "application/json"
+  },
+        });
         console.log(res.data);
         setuserdetails(res.data.data)
         await getUsers()
